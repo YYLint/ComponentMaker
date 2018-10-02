@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?><!--观看端-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/basic_live_touch_component"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/basic_live_video_component"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/show_screen_elements"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/channel_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/basic_vs_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--主播节目信息区-->
+        <LinearLayout
+            android:id="@+id/basic_live_program_component"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp" />
+
+        <!--官方主播节目信息区-->
+        <LinearLayout
+            android:id="@+id/basic_live_official_program_component"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp" />
+
+        <!--在线列表区-->
+        <RelativeLayout
+            android:id="@+id/basic_live_online_audience_component"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_toRightOf="@+id/basic_live_program_component"
+            android:paddingTop="6dp" />
+
+        <!--弹幕区-->
+        <RelativeLayout
+            android:id="@+id/basic_live_chat_component"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical|bottom" />
+
+        <!--自由模式麦序区域-->
+        <FrameLayout
+            android:id="@+id/basic_live_free_mic_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--主席模式麦序区域-->
+        <FrameLayout
+            android:id="@+id/basic_live_host_mic_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--发言区-->
+        <FrameLayout
+            android:id="@+id/basic_live_chat_emotion_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true" />
+
+        <!--自定义功能区-->
+        <FrameLayout
+            android:id="@+id/basic_live_seft_defind_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 官频提供一种PK活动模板 -->
+        <FrameLayout
+            android:id="@+id/basic_new_pk_activities_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <!-- 官频提供一种pk活动模板礼物组件模式 -->
+        <FrameLayout
+            android:id="@+id/basic_new_pk_activities_gift_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--插件中心的各种玩法 欢乐篮球, 吃货， 表情消消乐-->
+        <FrameLayout
+            android:id="@+id/basic_play_center_plugin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--陪玩层-->
+        <FrameLayout
+            android:id="@+id/play_together_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:visibility="visible" />
+
+        <!--营收业务功能区-->
+        <FrameLayout
+            android:id="@+id/basic_live_bussiness_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--自定义功能区:在营收层级之上-->
+        <FrameLayout
+            android:id="@+id/basic_live_custom_func_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 一件娱乐模版电商功能-->
+        <FrameLayout
+            android:id="@+id/onepiece_product_hot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--直播通知列表-->
+        <RelativeLayout
+            android:id="@+id/basic_live_notice_component"
+            android:layout_width="wrap_content"
+            android:layout_height="229dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+
+        <FrameLayout
+            android:id="@+id/basic_vs_mid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--基础功能区-->
+        <FrameLayout
+            android:id="@+id/basic_live_function_component"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/basic_vs_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+</FrameLayout>
