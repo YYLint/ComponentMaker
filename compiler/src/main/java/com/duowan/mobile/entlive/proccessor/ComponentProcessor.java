@@ -25,6 +25,7 @@ import com.squareup.javapoet.WildcardTypeName;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -73,6 +74,8 @@ public class ComponentProcessor extends AbstractProcessor {
     private HashMap<String, ModuleProxyInfo> modulesProxyMap = new HashMap<>();
     private HashMap<String, ComponentInfo> componentMap = new HashMap<>();
 
+    private Map<String, String> aptOption = Collections.emptyMap();
+
     private final static String PACKAGE = "com.duowan.mobile.entlive";
 
     @Override
@@ -81,6 +84,7 @@ public class ComponentProcessor extends AbstractProcessor {
         mFiler = processingEnv.getFiler();
         mElementUtils = processingEnv.getElementUtils();
         mMessager = processingEnv.getMessager();
+        aptOption = processingEnv.getOptions();
     }
 
     /**
@@ -101,20 +105,24 @@ public class ComponentProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        getInitBundleMethod(roundEnv);
-        setupComponentsMap(roundEnv);
-        initComponentsMap(roundEnv);
-        setupContainerToConfigMap(roundEnv);
-        initModulesMap(roundEnv);
-        initComponentMap(roundEnv);
-        initELModuleConfigs(roundEnv);
-        mWrapperParent = getAbstractWrapper();
-        mIComponentTypeName = getIComponentTypeName();
-        createWrapperChildren();
-        createFactoryImpl();
-        createModulesConstantName();
-        createComponentConstantName();
-        createWrapperModules();
+        try {
+            getInitBundleMethod(roundEnv);
+            setupComponentsMap(roundEnv);
+            initComponentsMap(roundEnv);
+            setupContainerToConfigMap(roundEnv);
+            initModulesMap(roundEnv);
+            initComponentMap(roundEnv);
+            initELModuleConfigs(roundEnv);
+            mWrapperParent = getAbstractWrapper();
+            mIComponentTypeName = getIComponentTypeName();
+            createWrapperChildren();
+            createFactoryImpl();
+            createModulesConstantName();
+            createComponentConstantName();
+            createWrapperModules();
+        } catch (Throwable e) {
+            mMessager.printMessage(Diagnostic.Kind.ERROR, "error = " + e);
+        }
         return true;
     }
 
@@ -373,13 +381,20 @@ public class ComponentProcessor extends AbstractProcessor {
         }
     }
 
-    private void createWrapperChildren() {
+    private void createWrapperChildren() throws Throwable {
         if (mWrapperParent == null) {
             return;
         }
-        for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
-            mMessager.printMessage(Diagnostic.Kind.NOTE,
-                    "zy key = " + entry.getKey() + ",value = " + entry.getValue());
+
+        final String RFilePath = aptOption.get("R_FILE_PATH");
+        final String RFilePackage = aptOption.get("R_FILE_PACKAGE");
+        System.out.println("R.java path = " + RFilePath);
+        System.out.println("R.java package = " + RFilePackage);
+        RFileResolver rFileResolver = null;
+        ClassName R = null;
+        if (RFilePath != null && RFilePackage != null) {
+            rFileResolver = new RFileResolver(RFilePath);
+            R = ClassName.get(RFilePackage, "R");
         }
 
         TypeName initConfigClass = ClassName.get("com.yy.mobile.ui.basicchanneltemplate.generate", "InitConfig");
@@ -405,10 +420,19 @@ public class ComponentProcessor extends AbstractProcessor {
 //                                    initConfigClass, config.initLevel().getValue(), config.resourceId(), unit.getBussinessId(index), method.getSimpleName());
                         }
                     }
-                    builder.addStatement("mConfigs.put($T.class, new $T($L, $L))",
-                            unit.getBussinessId(index) == null ? FreeContainer.class : unit.getBussinessId(index),
-                            initConfigClass, config.initLevel().getValue(), config.resourceId());
+                    int resId = config.resourceId();
+                    String fieldName = rFileResolver.getFieldName("id", resId);
 
+
+                    if(R!=null) {
+                        builder.addStatement("mConfigs.put($T.class, new $T($L, $T.id." + fieldName + "))",
+                                unit.getBussinessId(index) == null ? FreeContainer.class : unit.getBussinessId(index),
+                                initConfigClass, config.initLevel().getValue(), R);
+                    }else{
+                        builder.addStatement("mConfigs.put($T.class, new $T($L, $L))",
+                                unit.getBussinessId(index) == null ? FreeContainer.class : unit.getBussinessId(index),
+                                initConfigClass, config.initLevel().getValue(), R);
+                    }
                     index++;
 
                 }

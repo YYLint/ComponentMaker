@@ -24,6 +24,13 @@ android {
 
 }
 
+kapt {
+    arguments {
+        arg("R_FILE_PATH", "/Users/zhangyu/AndroidStudioProjects/ComponentMaker/lib1/build/generated/source/r/debug/com/yy/mobile/lib1/R.java")
+        arg("R_FILE_PACKAGE", "com.yy.mobile.lib1")
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
