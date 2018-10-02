@@ -18,11 +18,11 @@ import com.yy.mobile.lib1.container.BaseContainerConfig;
  * Created by ericwu on 2017/4/24.
  */
 @InitAttrConfigs({
-        @InitAttrConfig(component = BasicFuncitonComponent.class, initLevel = InitLevel.VERY_LOW, resourceId = R2.id.show_screen_elements),
-        @InitAttrConfig(component = TouchComponent.class, initLevel = InitLevel.VERY_LOW, resourceId = R2.id.basic_live_touch_component),
-        @InitAttrConfig(component = ProgramInfoFragment.class, initLevel = InitLevel.VERY_HIGHT, resourceId = R2.id.basic_live_program_component),
-        @InitAttrConfig(component = LiveComponent.class, initLevel = InitLevel.LOW, resourceId = R2.id.basic_live_bussiness_component),
-        @InitAttrConfig(component = ChatEmotionComponent.class, initLevel = InitLevel.VERY_LOW, resourceId = R2.id.basic_live_chat_emotion_component),
+        @InitAttrConfig(component = BasicFuncitonComponent.class, initLevel = InitLevel.VERY_LOW, resourceId = Rs.id.show_screen_elements),
+        @InitAttrConfig(component = TouchComponent.class, initLevel = InitLevel.VERY_LOW, resourceId = Rs.id.basic_live_touch_component),
+        @InitAttrConfig(component = ProgramInfoFragment.class, initLevel = InitLevel.VERY_HIGHT, resourceId = Rs.id.basic_live_program_component),
+        @InitAttrConfig(component = LiveComponent.class, initLevel = InitLevel.LOW, resourceId = Rs.id.basic_live_bussiness_component),
+        @InitAttrConfig(component = ChatEmotionComponent.class, initLevel = InitLevel.VERY_LOW, resourceId = Rs.id.basic_live_chat_emotion_component),
 })
 public class EntertainmentContainerConfig extends BaseContainerConfig {
 

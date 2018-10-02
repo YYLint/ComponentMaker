@@ -22,6 +22,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -386,13 +387,17 @@ public class ComponentProcessor extends AbstractProcessor {
             return;
         }
 
-        final String RFilePath = aptOption.get("R_FILE_PATH");
+        final String RFilePath1 = aptOption.get("R_FILE_BEFORE_PATH");
+        final String RFilePath2 = aptOption.get("R_FILE_AFTER_PATH");
         final String RFilePackage = aptOption.get("R_FILE_PACKAGE");
-        System.out.println("R.java path = " + RFilePath);
-        System.out.println("R.java package = " + RFilePackage);
         RFileResolver rFileResolver = null;
         ClassName R = null;
-        if (RFilePath != null && RFilePackage != null) {
+        if (RFilePath1 != null && RFilePath2 != null && RFilePackage != null) {
+            final String RFilePath = RFilePath1 + File.separator +
+                    RFilePackage.replace(".", File.separator) +
+                    File.separator + RFilePath2;
+            System.out.println("R.java package = " + RFilePackage);
+            System.out.println("R.java path = " + RFilePath);
             rFileResolver = new RFileResolver(RFilePath);
             R = ClassName.get(RFilePackage, "R");
         }
@@ -424,11 +429,11 @@ public class ComponentProcessor extends AbstractProcessor {
                     String fieldName = rFileResolver.getFieldName("id", resId);
 
 
-                    if(R!=null) {
+                    if (R != null) {
                         builder.addStatement("mConfigs.put($T.class, new $T($L, $T.id." + fieldName + "))",
                                 unit.getBussinessId(index) == null ? FreeContainer.class : unit.getBussinessId(index),
                                 initConfigClass, config.initLevel().getValue(), R);
-                    }else{
+                    } else {
                         builder.addStatement("mConfigs.put($T.class, new $T($L, $L))",
                                 unit.getBussinessId(index) == null ? FreeContainer.class : unit.getBussinessId(index),
                                 initConfigClass, config.initLevel().getValue(), R);
