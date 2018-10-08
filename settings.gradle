@@ -1,1 +1,2 @@
-include ':app', ':lib1', ":annotation", ":compiler", ":RFile-gradle-plugin"
+include ':app', ':lib1', ':lib2', ":annotation", ":compiler", ":RFile-gradle-plugin",
+        ":auto-annotation", "auto-compiler"

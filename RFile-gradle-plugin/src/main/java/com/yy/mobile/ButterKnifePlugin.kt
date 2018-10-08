@@ -13,14 +13,17 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionContainer
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.reflect.KClass
 
 class ButterKnifePlugin : Plugin<Project> {
 
-    var outputDir:File?=null
-    var rPackage=""
+    var outputDir: File? = null
+    var rPackage = ""
 
     override fun apply(project: Project) {
         outputDir = project.buildDir.resolve("generated/source/Rs")
@@ -88,12 +91,31 @@ class ButterKnifePlugin : Plugin<Project> {
                         inputs.file(rFile)
                         doLast {
                             FinalRClassBuilder.brewJava(rFile, outputDir, rPackage, "Rs", !useAndroidX)
+                            recordPackagePath(rPackage, outputDir!!, "packageRecord.txt")
                         }
                     }
                 }
             }
 
 
+        }
+    }
+
+    private fun recordPackagePath(packagePath: String, dir: File, fileName: String) {
+        try {
+            if (dir.isDirectory) {
+                val aimFile = File(dir, fileName)
+                if (!aimFile.exists()) {
+                    aimFile.createNewFile()
+
+                    BufferedWriter(FileWriter(aimFile)).use { output ->
+                        output.write(packagePath)
+                        output.flush()
+                    }
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 

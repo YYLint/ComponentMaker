@@ -10,6 +10,7 @@ import com.duowan.mobile.entlive.annotation.ModuleConfigDiffSupplement;
 import com.duowan.mobile.entlive.annotation.ModuleConfigs;
 import com.duowan.mobile.entlive.annotation.ModuleWrapper;
 import com.duowan.mobile.entlive.domain.FreeContainer;
+import com.github.javaparser.utils.Pair;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -22,7 +23,6 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -387,20 +387,9 @@ public class ComponentProcessor extends AbstractProcessor {
             return;
         }
 
-        final String RFilePath1 = aptOption.get("R_FILE_BEFORE_PATH");
-        final String RFilePath2 = aptOption.get("R_FILE_AFTER_PATH");
-        final String RFilePackage = aptOption.get("R_FILE_PACKAGE");
-        RFileResolver rFileResolver = null;
-        ClassName R = null;
-        if (RFilePath1 != null && RFilePath2 != null && RFilePackage != null) {
-            final String RFilePath = RFilePath1 + File.separator +
-                    RFilePackage.replace(".", File.separator) +
-                    File.separator + RFilePath2;
-            System.out.println("R.java package = " + RFilePackage);
-            System.out.println("R.java path = " + RFilePath);
-            rFileResolver = new RFileResolver(RFilePath);
-            R = ClassName.get(RFilePackage, "R");
-        }
+        Pair<RFileResolver, ClassName> RFile = RFileResolver.create(aptOption);
+        RFileResolver rFileResolver = RFile.a;
+        ClassName R = RFile.b;
 
         TypeName initConfigClass = ClassName.get("com.yy.mobile.ui.basicchanneltemplate.generate", "InitConfig");
         TypeName containerConfigClass = ClassName.get("com.duowan.mobile.entlive.domain", "ContainerConfig");
@@ -426,10 +415,8 @@ public class ComponentProcessor extends AbstractProcessor {
                         }
                     }
                     int resId = config.resourceId();
-                    String fieldName = rFileResolver.getFieldName("id", resId);
-
-
-                    if (R != null) {
+                    if (R != null && rFileResolver != null) {
+                        String fieldName = rFileResolver.getFieldName("id", resId);
                         builder.addStatement("mConfigs.put($T.class, new $T($L, $T.id." + fieldName + "))",
                                 unit.getBussinessId(index) == null ? FreeContainer.class : unit.getBussinessId(index),
                                 initConfigClass, config.initLevel().getValue(), R);
@@ -439,7 +426,6 @@ public class ComponentProcessor extends AbstractProcessor {
                                 initConfigClass, config.initLevel().getValue(), R);
                     }
                     index++;
-
                 }
             }
 

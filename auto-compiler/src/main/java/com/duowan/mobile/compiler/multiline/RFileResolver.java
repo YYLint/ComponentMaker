@@ -1,4 +1,4 @@
-package com.duowan.mobile.entlive.proccessor;
+package com.duowan.mobile.compiler.multiline;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
