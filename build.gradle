@@ -14,7 +14,7 @@ buildscript {
 
 //        classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-SNAPSHOT'
         //classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
-        classpath 'com.yy.mobile:RFile-gradle-plugin:1.1.1'
+        classpath 'com.yy.mobile:RFile-gradle-plugin:1.1.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
